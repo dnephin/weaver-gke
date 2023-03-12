@@ -23,8 +23,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/uuid"
-	"go.opentelemetry.io/otel/sdk/trace"
 	"github.com/ServiceWeaver/weaver-gke/internal/clients"
 	"github.com/ServiceWeaver/weaver-gke/internal/config"
 	"github.com/ServiceWeaver/weaver/runtime/envelope"
@@ -33,6 +31,8 @@ import (
 	"github.com/ServiceWeaver/weaver/runtime/protomsg"
 	"github.com/ServiceWeaver/weaver/runtime/protos"
 	"github.com/ServiceWeaver/weaver/runtime/retry"
+	"github.com/google/uuid"
+	"go.opentelemetry.io/otel/sdk/trace"
 )
 
 const (
@@ -235,7 +235,7 @@ func (b *Babysitter) startProcess(proc string) error {
 			// identify the weavelets.
 			delete(e.defunctWeaveletAddrs, addr)
 			b.logger.Info("Process (re)started with new address",
-				"process", logging.ShortenComponent(e.envelope.Weavelet().Process),
+				"process", logging.ShortenComponent(proc),
 				"address", e.weaveletAddr)
 			return nil
 		},
